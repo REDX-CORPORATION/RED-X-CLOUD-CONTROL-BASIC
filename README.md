@@ -85,7 +85,7 @@ fetch("http://192.168.X.X:6969/aimbot")
 
 ---
 
-## 🙏 Credits
+## 💢 Credits
 
 > This project is a **lightweight and open HTML frontend** made for RED-X control systems.  
 > Created by **Mohtasim Billah Jitu (RED-X CORPORATION)**.
