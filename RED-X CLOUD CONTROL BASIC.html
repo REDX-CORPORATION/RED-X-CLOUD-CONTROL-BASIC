@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RED-X CLOUD CONTROL</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&display=swap" rel="stylesheet">
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0a;
+      color: #eee;
+      overflow: hidden;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: #1c0101;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 500px;
+      margin: 4rem auto;
+      padding: 2.5rem;
+      background: rgba(20, 20, 20, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      backdrop-filter: blur(2px);
+      box-shadow:
+        0 8px 32px rgba(255, 3, 3, 0.5),
+        0 0 20px rgba(229, 9, 20, 0.3),
+        inset 0 0 5px rgba(229, 9, 20, 0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #e50914;
+      text-shadow:
+        0 0 5px #e50914aa,
+        0 0 15px #e50914aa;
+      margin-bottom: 1.8rem;
+    }
+
+button {
+  cursor: pointer;
+  background: transparent;
+  color: #aba9a9;
+  border: 2px solid #630202;
+  padding: 12px 28px;
+  margin: 10px 15px;
+  font-size: 1.05rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 10px #e5091433,
+    inset 0 0 5px #e5091444;
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover {
+  background: #630202;
+  color: #ffffff;
+  box-shadow:
+    0 0 20px #e50914aa,
+    inset 0 0 15px #b00f10;
+  transform: scale(1.03);
+}
+
+button:active {
+  transform: scale(0.96);
+  background: #4d0101;
+  box-shadow:
+    0 0 15px #e5091477,
+    inset 0 0 10px #8c0c0c;
+}
+
+
+
+    #status {
+      margin-top: 1.8rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-shadow:
+        0 0 8px #e50914aa,
+        0 0 20px #e50914bb;
+      min-height: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <div class="container">
+    <h1>RED-X CLOUD CONTROL</h1>
+
+<!-- CHANGE OR RENAME THE BUTTONS AS YOU LIKE -->
+
+    <button onclick="sendCommand('/load')">Load Aimbot</button>
+    <button onclick="sendCommand('/toggle')">Toggle Aimbot</button>
+    <button onclick="sendCommand('/bind')">Bind Key</button>
+    <button onclick="sendCommand('/location')">Chams menu</button>
+    <button onclick="sendCommand('/exit')">Exit exe</button>
+    <div id="status">Connecting...</div>
+  </div>
+
+  <script>
+    const baseURL = 'http://192.168.0.214:6969'; // Your local server address
+
+    async function sendCommand(endpoint) {
+      try {
+        const res = await fetch(baseURL + endpoint);
+        const text = await res.text();
+        setStatus(text, true);
+      } catch (err) {
+        setStatus('❌ Error connecting to server!', false);
+      }
+    }
+
+    async function updateStatus() {
+      try {
+        const res = await fetch(baseURL + '/status');
+        const text = await res.text();
+        setStatus(text, true);
+      } catch {
+        setStatus('❌ Error connecting to server!', false);
+      }
+    }
+
+    function setStatus(text, isSuccess) {
+      const el = document.getElementById('status');
+      el.textContent = text || 'No response';
+      el.style.color = isSuccess ? '#e50914' : '#ff4c4c';
+      el.style.textShadow = isSuccess
+        ? '0 0 8px #e50914aa, 0 0 20px #e50914bb'
+        : '0 0 8px #ff4c4caa, 0 0 20px #ff4c4cbb';
+    }
+
+    // Status update every 1 sec (1000ms)
+    setInterval(updateStatus, 1000);
+    updateStatus();
+
+    // Particles
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 250, density: { enable: true, value_area: 800 } },
+        color: { value: '#ff0000' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.7, random: true },
+        size: { value: 4, random: true },
+        line_linked: {
+          enable: true,
+          distance: 100,
+          color: '#ff0000',
+          opacity: 0.6,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 3,
+          direction: 'none',
+          random: true,
+          straight: false,
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true
+        },
+        modes: {
+          repulse: { distance: 50, duration: 0.5 },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
